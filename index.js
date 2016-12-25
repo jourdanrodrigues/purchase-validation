@@ -1,3 +1,5 @@
+'use strict';
+
 if (require("fs").existsSync(".env")) {
     require("dotenv").config();
 }

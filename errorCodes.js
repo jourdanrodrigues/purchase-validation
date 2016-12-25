@@ -1,3 +1,5 @@
+'use strict';
+
 let status = require("./httpStatus");
 
 module.exports = {

@@ -1,3 +1,5 @@
+'use strict';
+
 let request = require("request-promise");
 
 module.exports = function (order) {
