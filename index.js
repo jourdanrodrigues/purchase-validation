@@ -8,8 +8,10 @@ let app = require("express")(),
     performPayment = require("./performPayment"),
     errorCodes = require("./errorCodes");
 
+app.use(require('body-parser').json());
+
 app.post("/api/v1/payments/", function (request, response) {
-    performPayment()
+    performPayment(request.body)
         .then(
             function () {
                 /* Not happened yet */
@@ -26,3 +28,7 @@ app.post("/api/v1/payments/", function (request, response) {
 app.listen(PORT, function () {
     console.log(`Server listening on: http://localhost:${PORT}/.`);
 });
+
+if (/mocha/.test(process.argv[1])) {
+    module.exports = app;
+}

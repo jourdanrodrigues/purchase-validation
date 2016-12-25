@@ -1,6 +1,6 @@
 let request = require("request-promise");
 
-module.exports = function () {
+module.exports = function (data) {
     // cURL from => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
     // Error case => // response.error = [{"Code":<Integer>,"Message":<String>}]
     return request({
@@ -13,20 +13,20 @@ module.exports = function () {
             "RequestId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         },
         data: {
-            "MerchantOrderId": "2014111703",
+            "MerchantOrderId": data["orderId"],
             "Customer": {
-                "Name": "Comprador Teste"
+                "Name": data["customer"]["name"]
             },
             "Payment": {
-                "Type": "CreditCard",
-                "Amount": 15700,
-                "Installments": 1,
+                "Type": data["payment"]["type"],
+                "Amount": data["payment"]["amount"],
+                "Installments": data["payment"]["installments"],
                 "CreditCard": {
-                    "CardNumber": "4551870000000183",
-                    "Holder": "Teste Holder",
-                    "ExpirationDate": "12/2021",
-                    "SecurityCode": "123",
-                    "Brand": "Visa"
+                    "CardNumber": data["payment"]["creditCard"]["cardNumber"],
+                    "Holder": data["payment"]["creditCard"]["holder"],
+                    "ExpirationDate": data["payment"]["creditCard"]["expirationDate"],
+                    "SecurityCode": data["payment"]["creditCard"]["securityCode"],
+                    "Brand": data["payment"]["creditCard"]["brand"]
                 }
             }
         }
