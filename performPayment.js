@@ -2,9 +2,10 @@ let request = require("request-promise");
 
 module.exports = function () {
     // cURL from => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
+    // Error case => // response.error = [{"Code":<Integer>,"Message":<String>}]
     return request({
         method: "POST",
-        uri: "https://apisandbox.cieloecommerce.cielo.com.br/1/sales/",
+        uri: process.env.CIELO_API + "1/sales/",
         headers: {
             "Content-Type": "application/json",
             "MerchantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",

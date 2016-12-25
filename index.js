@@ -4,16 +4,25 @@ if (require("fs").existsSync(".env")) {
 
 const PORT = process.env.PORT || "8080";
 
-let http = require("http"),
+let app = require("express")(),
     performPayment = require("./performPayment"),
     errorCodes = require("./errorCodes");
 
-function handleRequest(request, response) {
-    response.end(`Path Hit: ${request.url}`);
-}
+app.post("/api/v1/payments/", function (request, response) {
+    performPayment()
+        .then(
+            function () {
+                /* Not happened yet */
+            },
+            (paymentResponse) => {
+                let error = errorCodes.cielo[JSON.parse(paymentResponse.error)[0]["Code"]];
 
-let server = http.createServer(handleRequest);
+                response.statusCode = error.code;
+                response.send(error.data);
+            }
+        );
+});
 
-server.listen(PORT, function () {
+app.listen(PORT, function () {
     console.log(`Server listening on: http://localhost:${PORT}/.`);
 });
