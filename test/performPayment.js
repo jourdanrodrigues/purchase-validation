@@ -12,20 +12,20 @@ chai.use(chaiHttp);
 describe("Payments", () => {
     it("should be failing due to unfinished integration (simple transaction)", (done) => {
         let orderData = {
-            orderId: "2014111703",
-            customer: {
-                name: "Comprador Teste"
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
             },
-            payment: {
-                type: "CreditCard",
-                amount: 15700,
-                installments: 1,
-                creditCard: {
-                    cardNumber: "4551870000000183",
-                    holder: "Teste Holder",
-                    expirationDate: "12/2021",
-                    securityCode: "123",
-                    brand: "Visa"
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "4551870000000183",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
                 }
             }
         };
@@ -43,39 +43,48 @@ describe("Payments", () => {
 
     it("should be failing due to unfinished integration (complete transaction)", (done) => {
         let orderData = {
-            orderId: "2014111703",
-            customer: {
-                name: "Comprador Teste",
-                identity: "11225468954",
-                identityType: "CPF",
-                email: "compradorteste@teste.com",
-                birthdate: "1991-01-02",
-                address: {
-                    street: "Rua Teste",
-                    number: "123",
-                    complement: "AP 123",
-                    zipCode: "12345987",
-                    city: "Rio de Janeiro",
-                    state: "RJ",
-                    country: "BRA"
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste",
+                Identity: "11225468954",
+                IdentityType: "CPF",
+                Email: "compradorteste@teste.com",
+                Birthdate: "1991-01-02",
+                Address: {
+                    Street: "Rua Teste",
+                    Number: "123",
+                    Complement: "AP 123",
+                    ZipCode: "12345987",
+                    City: "Rio de Janeiro",
+                    State: "RJ",
+                    Country: "BRA"
+                },
+                DeliveryAddress: {
+                    Street: "Rua Teste",
+                    Number: "123",
+                    Complement: "AP 123",
+                    ZipCode: "12345987",
+                    City: "Rio de Janeiro",
+                    State: "RJ",
+                    Country: "BRA"
                 }
             },
-            payment: {
-                type: "CreditCard",
-                amount: 15700,
-                installments: 1,
-                serviceTaxAmount: 0,
-                interest: "ByMerchant",
-                capture: true,
-                authenticate: false,
-                softDescriptor: "tst",
-                creditCard: {
-                    cardNumber: "4551870000000183",
-                    holder: "Teste Holder",
-                    expirationDate: "12/2021",
-                    securityCode: "123",
-                    brand: "Visa",
-                    saveCard: "false"
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                ServiceTaxAmount: 0,
+                Installments: 1,
+                Interest: "ByMerchant",
+                Capture: true,
+                Authenticate: false,
+                SoftDescriptor: "tst",
+                CreditCard: {
+                    CardNumber: "4551870000000183",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    SaveCard: "false",
+                    Brand: "Visa"
                 }
             }
         };
