@@ -6,18 +6,19 @@ let request = require("request-promise");
  * @param {{
  *  MerchantOrderId,
  *  Customer: {
- *      Name, Identity, IdentityType, Email, Birthdate,
- *      Address: {
- *          Street, Number, Complement, ZipCode, City, State, Country
+ *      Name, [Identity], [IdentityType], [Email], [Birthdate],
+ *      [Address]: {
+ *          [Street], [Number], [Complement], [ZipCode], [City], [State], [Country]
  *      },
- *      DeliveryAddress: {
- *          Street, Number, Complement, ZipCode, City, State, Country
+ *      [DeliveryAddress]: {
+ *          [Street], [Number], [Complement], [ZipCode], [City], [State], [Country]
  *      },
  *  }
  *  Payment: {
- *      Type, Amount, ServiceTaxAmount, Installments, Interest, Capture, Authenticate, SoftDescriptor,
+ *      Type, Amount, ServiceTaxAmount, Installments, [Interest], Capture, Authenticate, SoftDescriptor, [Currency],
+ *      [Country]
  *      CreditCard: {
- *          CardNumber, Holder, ExpirationDate, SecurityCode, SaveCard, Brand
+ *          CardNumber, Holder, ExpirationDate, SecurityCode, [SaveCard], Brand
  *      }
  *  }
  * }} order

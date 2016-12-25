@@ -78,6 +78,7 @@ describe("Payments", () => {
                 Capture: true,
                 Authenticate: false,
                 SoftDescriptor: "tst",
+                Currency: "BRL",
                 CreditCard: {
                     CardNumber: "4551870000000183",
                     Holder: "Teste Holder",
