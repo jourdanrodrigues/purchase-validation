@@ -22,7 +22,7 @@ describe("Payments", () => {
     it("should fail due to merchant ID not in GUID format", (done) => {
         let orderData = {};
 
-        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+        process.env.CIELO_MERCHANT_ID = "not-the-right-format";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -31,6 +31,20 @@ describe("Payments", () => {
                 response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
                 response.body.should.be.a("object");
                 response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                done();
+            });
+    });
+
+    it("should fail due to empty data", (done) => {
+        let orderData = {};
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.detail.should.be.eql("Requisição não pode estar vazia.");
                 done();
             });
     });
