@@ -1,11 +1,15 @@
 let request = require("request-promise");
 
-module.exports = function (data) {
+module.exports = function (order) {
     // cURL from => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
     // Error case => // response.error = [{"Code":<Integer>,"Message":<String>}]
+    let customer = order.customer,
+        payment = order.payment,
+        creditCard = payment.creditCard;
+
     return request({
         method: "POST",
-        uri: process.env.CIELO_API + "1/sales/",
+        uri: process.env.CIELO_API_URL + "1/sales/",
         headers: {
             "Content-Type": "application/json",
             "MerchantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -13,20 +17,20 @@ module.exports = function (data) {
             "RequestId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         },
         data: {
-            "MerchantOrderId": data["orderId"],
+            "MerchantOrderId": order.orderId,
             "Customer": {
-                "Name": data["customer"]["name"]
+                "Name": customer.name
             },
             "Payment": {
-                "Type": data["payment"]["type"],
-                "Amount": data["payment"]["amount"],
-                "Installments": data["payment"]["installments"],
+                "Type": payment.type,
+                "Amount": payment.amount,
+                "Installments": payment.installments,
                 "CreditCard": {
-                    "CardNumber": data["payment"]["creditCard"]["cardNumber"],
-                    "Holder": data["payment"]["creditCard"]["holder"],
-                    "ExpirationDate": data["payment"]["creditCard"]["expirationDate"],
-                    "SecurityCode": data["payment"]["creditCard"]["securityCode"],
-                    "Brand": data["payment"]["creditCard"]["brand"]
+                    "CardNumber": creditCard.cardNumber,
+                    "Holder": creditCard.holder,
+                    "ExpirationDate": creditCard.expirationDate,
+                    "SecurityCode": creditCard.securityCode,
+                    "Brand": creditCard.brand
                 }
             }
         }
