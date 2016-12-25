@@ -10,6 +10,31 @@ let status = require("../httpStatus");
 chai.use(chaiHttp);
 
 describe("Payments", () => {
+    let environmentMerchantId;
+
+    beforeEach(() => {
+        environmentMerchantId = process.env.CIELO_MERCHANT_ID;
+    });
+    afterEach(() => {
+        process.env.CIELO_MERCHANT_ID = environmentMerchantId;
+    });
+
+    it("should fail due to merchant ID not in GUID format", (done) => {
+        let orderData = {};
+
+        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
+                response.body.should.be.a("object");
+                response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                done();
+            });
+    });
+
     it("should be failing due to unfinished integration (simple transaction)", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
@@ -29,6 +54,9 @@ describe("Payments", () => {
                 }
             }
         };
+
+        // Not ready yet
+        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -89,6 +117,9 @@ describe("Payments", () => {
                 }
             }
         };
+
+        // Not ready yet
+        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
         chai.request(server)
             .post("/api/v1/payments/")
