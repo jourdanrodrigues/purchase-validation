@@ -1,3 +1,5 @@
 machine:
   environment:
     CIELO_API_URL: https://apisandbox.cieloecommerce.cielo.com.br/
+    CIELO_MERCHANT_ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    CIELO_MERCHANT_KEY: 0123456789012345678901234567890123456789

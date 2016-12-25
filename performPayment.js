@@ -35,9 +35,8 @@ module.exports = function (order) {
         uri: process.env.CIELO_API_URL + "1/sales/",
         headers: {
             "Content-Type": "application/json",
-            "MerchantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "MerchantKey": "0123456789012345678901234567890123456789",
-            "RequestId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            "MerchantId": process.env.CIELO_MERCHANT_ID,
+            "MerchantKey": process.env.CIELO_MERCHANT_KEY
         },
         data: order
     });
