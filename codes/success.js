@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-let status = require("./httpStatus");
+let status = require("../httpStatus");
 
 let successData = {
     "cielo": {

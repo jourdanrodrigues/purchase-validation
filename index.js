@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /* istanbul ignore if */
 if (require("fs").existsSync(".env")) {
@@ -9,8 +9,8 @@ const PORT = process.env.PORT || "8080";
 
 let app = require("express")(),
     performPayment = require("./performPayment"),
-    errorCodes = require("./errorCodes"),
-    successCodes = require("./successCodes");
+    errorCodes = require("./codes/error"),
+    successCodes = require("./codes/success");
 
 app.use(require('body-parser').json());
 

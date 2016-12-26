@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 let chai = require("chai"),
     should = chai.should(),
     chaiHttp = require("chai-http");
 
-let status = require("../httpStatus"),
-    server = require("../index");
+let status = require("../../httpStatus"),
+    server = require("../../index");
 
 chai.use(chaiHttp);
 
