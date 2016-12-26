@@ -1,5 +1,6 @@
 'use strict';
 
+/* istanbul ignore if */
 if (require("fs").existsSync(".env")) {
     require("dotenv").config();
 }
