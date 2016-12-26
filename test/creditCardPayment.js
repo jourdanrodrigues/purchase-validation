@@ -142,6 +142,72 @@ describe("Credit card sale", () => {
             });
     });
 
+    it("should fail due to problems with the credit card", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000008",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("70");
+                response.body.detail.should.be.eql("Problemas com o cartão de crédito.");
+                done();
+            });
+    });
+
+    it("should fail due to timeout with credit card (not authorized)", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000006",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("99");
+                response.body.detail.should.be.eql("Não autorizada.");
+                done();
+            });
+    });
+
     it("should be created in a simple transaction with credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
