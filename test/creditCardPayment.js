@@ -240,6 +240,39 @@ describe("Credit card sale", () => {
             });
     });
 
+    it("should be created in a authenticated transaction with credit card", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste",
+                Authenticate: true
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000001",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_201_CREATED);
+                response.body.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("4");
+                response.body.detail.should.be.eql("Operação realizada com sucesso.");
+                done();
+            });
+    });
+
     it("should be created in a complete transaction with credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",

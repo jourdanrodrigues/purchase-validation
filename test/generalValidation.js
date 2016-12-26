@@ -44,4 +44,24 @@ describe("General validations for sale", () => {
                 done();
             });
     });
+
+    it("should fail to create due to payment missing", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.code.should.be.eql("119");
+                response.body.detail.should.be.eql("Necessária pelo menos 1 forma de pagamento.");
+                done();
+            });
+    });
 });
