@@ -9,7 +9,7 @@ let status = require("../httpStatus");
 
 chai.use(chaiHttp);
 
-describe("Payments", () => {
+describe("Sale", () => {
     let environmentMerchantId;
 
     beforeEach(() => {
@@ -19,7 +19,7 @@ describe("Payments", () => {
         process.env.CIELO_MERCHANT_ID = environmentMerchantId;
     });
 
-    it("should fail due to merchant ID not in GUID format", (done) => {
+    it("should fail to create due to merchant ID not in GUID format", (done) => {
         let orderData = {};
 
         process.env.CIELO_MERCHANT_ID = "not-the-right-format";
@@ -35,7 +35,7 @@ describe("Payments", () => {
             });
     });
 
-    it("should fail due to empty data", (done) => {
+    it("should fail to create due to empty data", (done) => {
         let orderData = {};
 
         chai.request(server)
@@ -49,7 +49,7 @@ describe("Payments", () => {
             });
     });
 
-    it("should be failing due to unfinished integration (simple transaction)", (done) => {
+    it("should be created in a simple transaction with credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
             Customer: {
@@ -83,7 +83,7 @@ describe("Payments", () => {
             });
     });
 
-    it("should be failing due to unfinished integration (complete transaction)", (done) => {
+    it("should be created in a complete transaction with credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
             Customer: {
@@ -144,5 +144,38 @@ describe("Payments", () => {
                 response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
                 done()
             })
-    })
+    });
+
+    it("should be created with a credit card token", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111706",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 100,
+                Installments: 1,
+                SoftDescriptor: "tst",
+                CreditCard: {
+                    CardToken: "6e1bf77a-b28b-4660-b14f-455e2a1c95e9",
+                    SecurityCode: "262",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        // Not ready yet
+        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
+                response.body.should.be.a("object");
+                response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                done()
+            })
+    });
 });
