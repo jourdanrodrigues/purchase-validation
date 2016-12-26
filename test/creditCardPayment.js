@@ -10,7 +10,7 @@ let status = require("../httpStatus"),
 chai.use(chaiHttp);
 
 describe("Credit card sale", () => {
-    it("should fail due to unauthorized credit card", (done) => {
+    it("should fail due to expired credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
             Customer: {
@@ -21,7 +21,7 @@ describe("Credit card sale", () => {
                 Amount: 15700,
                 Installments: 1,
                 CreditCard: {
-                    CardNumber: "4551870000000183",
+                    CardNumber: "0000000000000003",
                     Holder: "Teste Holder",
                     ExpirationDate: "12/2021",
                     SecurityCode: "123",
@@ -37,7 +37,39 @@ describe("Credit card sale", () => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
                 response.body.data.should.be.a("object");
-                response.body.detail.should.be.eql("Transação não autorizada para este cartão.");
+                response.body.detail.should.be.eql("Cartão expirado.");
+                done();
+            });
+    });
+
+    it("should fail due to unauthorized credit card", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000002",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.data.should.be.a("object");
+                response.body.detail.should.be.eql("Cartão de crédito não autorizado.");
                 done();
             });
     });
