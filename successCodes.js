@@ -9,7 +9,8 @@ let successData = {
         4: {httpStatus: status.HTTP_201_CREATED, message: "Operação realizada com sucesso."}, // Simple transaction
         6: {httpStatus: status.HTTP_201_CREATED, message: "Operação realizada com sucesso."}, // Complete transaction
         57: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito expirado."},
-        77: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito cancelado."}
+        77: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito cancelado."},
+        78: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito bloqueado."}
     }
 };
 

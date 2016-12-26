@@ -5,7 +5,7 @@ let status = require("./httpStatus");
 let mountData = (apiCode, httpStatus, message) => ({
     httpStatus: httpStatus,
     data: {
-        code: apiCode,
+        code: apiCode.toString(),
         detail: message
     }
 });

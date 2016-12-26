@@ -24,6 +24,7 @@ describe("General validations for sale", () => {
 
                 response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
                 response.body.should.be.a("object");
+                response.body.code.should.be.eql("114");
                 response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
                 done();
             });
@@ -38,6 +39,7 @@ describe("General validations for sale", () => {
             .end((error, response) => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
+                response.body.code.should.be.eql("122");
                 response.body.detail.should.be.eql('"MerchantOrderId" é obrigatório.');
                 done();
             });

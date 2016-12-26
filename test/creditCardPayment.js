@@ -37,6 +37,7 @@ describe("Credit card sale", () => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
                 response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("57");
                 response.body.detail.should.be.eql("Cartão de crédito expirado.");
                 done();
             });
@@ -69,7 +70,41 @@ describe("Credit card sale", () => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
                 response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("2");
                 response.body.detail.should.be.eql("Cartão de crédito não autorizado.");
+                done();
+            });
+    });
+
+    it("should fail due to locked credit card", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000005",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
+
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("78");
+                response.body.detail.should.be.eql("Cartão de crédito bloqueado.");
                 done();
             });
     });
@@ -101,6 +136,7 @@ describe("Credit card sale", () => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
                 response.body.data.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("77");
                 response.body.detail.should.be.eql("Cartão de crédito cancelado.");
                 done();
             });
@@ -132,6 +168,7 @@ describe("Credit card sale", () => {
             .end((error, response) => {
                 response.should.have.status(status.HTTP_201_CREATED);
                 response.body.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("4");
                 response.body.detail.should.be.eql("Operação realizada com sucesso.");
                 done();
             });
@@ -192,6 +229,7 @@ describe("Credit card sale", () => {
             .end((error, response) => {
                 response.should.have.status(status.HTTP_201_CREATED);
                 response.body.should.be.a("object");
+                response.body.data.Payment.ReturnCode.should.be.eql("6");
                 response.body.detail.should.be.eql("Operação realizada com sucesso.");
                 done()
             })
@@ -222,6 +260,7 @@ describe("Credit card sale", () => {
             .end((error, response) => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
+                response.body.code.should.be.eql("130");
                 response.body.detail.should.be.eql("Cartão de crédito não encontrado.");
                 done()
             })
