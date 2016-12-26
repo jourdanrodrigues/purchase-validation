@@ -36,7 +36,7 @@ app.post("/api/v1/payments/", function (request, response) {
              * }} paymentResponse
              */
             (paymentResponse) => {
-                let errorInfo = errorCodes.cielo[paymentResponse.error[0].Code];
+                let errorInfo = errorCodes("cielo", paymentResponse);
 
                 response.statusCode = errorInfo.httpStatus;
                 response.send(errorInfo.data);
