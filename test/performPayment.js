@@ -2,10 +2,10 @@
 
 let chai = require("chai"),
     should = chai.should(),
-    chaiHttp = require("chai-http"),
-    server = require("../index");
+    chaiHttp = require("chai-http");
 
-let status = require("../httpStatus");
+let status = require("../httpStatus"),
+    server = require("../index");
 
 chai.use(chaiHttp);
 
@@ -44,12 +44,12 @@ describe("Sale", () => {
             .end((error, response) => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
-                response.body.detail.should.be.eql("Requisição não pode estar vazia.");
+                response.body.detail.should.be.eql('"MerchantOrderId" é obrigatório.');
                 done();
             });
     });
 
-    it("should be created in a simple transaction with credit card", (done) => {
+    it("should fail due to unauthorized credit card", (done) => {
         let orderData = {
             MerchantOrderId: "2014111703",
             Customer: {
@@ -69,16 +69,45 @@ describe("Sale", () => {
             }
         };
 
-        // Not ready yet
-        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+        chai.request(server)
+            .post("/api/v1/payments/")
+            .send(orderData)
+            .end((error, response) => {
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
+                response.body.should.be.a("object");
+                response.body.data.should.be.a("object");
+                response.body.detail.should.be.eql("Transação não autorizada para este cartão.");
+                done();
+            });
+    });
+
+    it("should be created in a simple transaction with credit card", (done) => {
+        let orderData = {
+            MerchantOrderId: "2014111703",
+            Customer: {
+                Name: "Comprador Teste"
+            },
+            Payment: {
+                Type: "CreditCard",
+                Amount: 15700,
+                Installments: 1,
+                CreditCard: {
+                    CardNumber: "0000000000000001",
+                    Holder: "Teste Holder",
+                    ExpirationDate: "12/2021",
+                    SecurityCode: "123",
+                    Brand: "Visa"
+                }
+            }
+        };
 
         chai.request(server)
             .post("/api/v1/payments/")
             .send(orderData)
             .end((error, response) => {
-                response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
+                response.should.have.status(status.HTTP_201_CREATED);
                 response.body.should.be.a("object");
-                response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                response.body.detail.should.be.eql("Operação realizada com sucesso.");
                 done();
             });
     });
@@ -122,7 +151,7 @@ describe("Sale", () => {
                 SoftDescriptor: "tst",
                 Currency: "BRL",
                 CreditCard: {
-                    CardNumber: "4551870000000183",
+                    CardNumber: "0000000000000004",
                     Holder: "Teste Holder",
                     ExpirationDate: "12/2021",
                     SecurityCode: "123",
@@ -132,21 +161,18 @@ describe("Sale", () => {
             }
         };
 
-        // Not ready yet
-        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-
         chai.request(server)
             .post("/api/v1/payments/")
             .send(orderData)
             .end((error, response) => {
-                response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
+                response.should.have.status(status.HTTP_201_CREATED);
                 response.body.should.be.a("object");
-                response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                response.body.detail.should.be.eql("Operação realizada com sucesso.");
                 done()
             })
     });
 
-    it("should be created with a credit card token", (done) => {
+    it("should fail due to credit card by token not found", (done) => {
         let orderData = {
             MerchantOrderId: "2014111706",
             Customer: {
@@ -165,16 +191,13 @@ describe("Sale", () => {
             }
         };
 
-        // Not ready yet
-        process.env.CIELO_MERCHANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-
         chai.request(server)
             .post("/api/v1/payments/")
             .send(orderData)
             .end((error, response) => {
-                response.should.have.status(status.HTTP_500_INTERNAL_SERVER_ERROR);
+                response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
-                response.body.detail.should.be.eql("O ID do vendedor está em formato incorreto.");
+                response.body.detail.should.be.eql("Cartão de crédito não encontrado.");
                 done()
             })
     });

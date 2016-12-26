@@ -9,21 +9,37 @@ const PORT = process.env.PORT || "8080";
 
 let app = require("express")(),
     performPayment = require("./performPayment"),
-    errorCodes = require("./errorCodes");
+    errorCodes = require("./errorCodes"),
+    successCodes = require("./successCodes");
 
 app.use(require('body-parser').json());
 
 app.post("/api/v1/payments/", function (request, response) {
     performPayment(request.body)
         .then(
-            function () {
-                /* Not happened yet */
-            },
+            /**
+             * @param {{
+             *  Payment: {
+             *      ReturnCode
+             *  }
+             * }} paymentResponse
+             */
             (paymentResponse) => {
-                let error = errorCodes.cielo[JSON.parse(paymentResponse.error)[0]["Code"]];
+                let successInfo = successCodes("cielo", paymentResponse);
 
-                response.statusCode = error.code;
-                response.send(error.data);
+                response.statusCode = successInfo.httpStatus;
+                response.send(successInfo.data)
+            },
+            /**
+             * @param {{
+             *  error: {Code}
+             * }} paymentResponse
+             */
+            (paymentResponse) => {
+                let errorInfo = errorCodes.cielo[paymentResponse.error[0].Code];
+
+                response.statusCode = errorInfo.httpStatus;
+                response.send(errorInfo.data);
             }
         );
 });
