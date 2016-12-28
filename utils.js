@@ -12,6 +12,16 @@ function pop(object, attribute, defaultValue) {
     return attributeValue || defaultValue;
 }
 
+/**
+ * Perform a deep copy of a given object
+ * @param {Object} object
+ * @return {Object}
+ */
+function deepCopy(object) {
+    return JSON.parse(JSON.stringify(object));
+}
+
 module.exports = {
-    pop: pop
+    pop: pop,
+    deepCopy: deepCopy
 };
