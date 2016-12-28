@@ -13,7 +13,7 @@ let app = require("express")(),
 app.use(require('body-parser').json());
 
 app.post("/api/v1/payments/", function (request, response) {
-    Payment.create(request.body)
+    Payment.create(request.body.order)
         .then(
             (paymentResponse) => {
                 Payment.successfulResponse(response, paymentResponse)

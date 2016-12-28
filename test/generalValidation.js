@@ -11,14 +11,16 @@ chai.use(chaiHttp);
 
 describe("General validations for sale", () => {
     it("should fail to create due to merchant ID not in GUID format", (done) => {
-        let orderData = {};
+        let requestData = {
+            order: {}
+        };
 
         let environmentMerchantId = process.env.CIELO_MERCHANT_ID;
         process.env.CIELO_MERCHANT_ID = "not-the-right-format";
 
         chai.request(server)
             .post("/api/v1/payments/")
-            .send(orderData)
+            .send(requestData)
             .end((error, response) => {
                 process.env.CIELO_MERCHANT_ID = environmentMerchantId;
 
@@ -31,11 +33,13 @@ describe("General validations for sale", () => {
     });
 
     it("should fail to create due to empty data", (done) => {
-        let orderData = {};
+        let requestData = {
+            order: {}
+        };
 
         chai.request(server)
             .post("/api/v1/payments/")
-            .send(orderData)
+            .send(requestData)
             .end((error, response) => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
@@ -46,16 +50,18 @@ describe("General validations for sale", () => {
     });
 
     it("should fail to create due to payment missing", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
+        let requestData = {
+            order: {
+                MerchantOrderId: "2014111703",
+                Customer: {
+                    Name: "Comprador Teste"
+                }
             }
         };
 
         chai.request(server)
             .post("/api/v1/payments/")
-            .send(orderData)
+            .send(requestData)
             .end((error, response) => {
                 response.should.have.status(status.HTTP_400_BAD_REQUEST);
                 response.body.should.be.a("object");
