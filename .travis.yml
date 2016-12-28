@@ -7,6 +7,7 @@ env:
     - CIELO_MERCHANT_ID=d17aac90-7c60-43d8-99ae-c3d78825116f
     - CIELO_MERCHANT_KEY=IFKCYKBHOPHYEZJQXCISBGUEBRDNAXBVUIPGKFXQ
     - CIELO_API_URL=https://apisandbox.cieloecommerce.cielo.com.br/
+    # CLEAR_SALE_ENTITY_CODE={GUID, required and confidential}
 
 install: npm i
 
