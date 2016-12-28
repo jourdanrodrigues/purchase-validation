@@ -4,9 +4,9 @@ let chai = require("chai"),
     should = chai.should(),
     chaiHttp = require("chai-http");
 
-let status = require("../../httpStatus"),
+let status = require("../../assets/httpStatus"),
     server = require("../../index"),
-    utils = require("../../utils");
+    utils = require("../../assets/utils");
 
 chai.use(chaiHttp);
 
