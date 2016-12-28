@@ -2,8 +2,7 @@
 
 let request = require("request-promise"),
     status = require("./../assets/httpStatus"),
-    successCodes = require("./codes/success"),
-    errorCodes = require("./codes/error");
+    responses = require("./responses");
 
 /**
  * Simple order => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
@@ -52,7 +51,7 @@ function create(order) {
  * @param {{ statusCode, send }} requestResponse
  */
 function successfulResponse(requestResponse, paymentResponse) {
-    let successInfo = successCodes("cielo", paymentResponse);
+    let successInfo = responses.success(paymentResponse);
 
     requestResponse.statusCode = successInfo.httpStatus;
     requestResponse.send(successInfo.data)
@@ -72,7 +71,7 @@ function erroneousResponse(requestResponse, paymentResponse) {
         requestResponse.send("Ocorreu um erro no serviço de pagamento.");
     }
     else {
-        let errorInfo = errorCodes("cielo", paymentResponse);
+        let errorInfo = responses.error(paymentResponse);
 
         requestResponse.statusCode = errorInfo.httpStatus;
         requestResponse.send(errorInfo.data);
