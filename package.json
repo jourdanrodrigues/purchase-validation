@@ -6,7 +6,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "istanbul cover --include-all-sources true node_modules/.bin/_mocha test/**/*.js"
+    "test": "istanbul cover --include-all-sources true node_modules/.bin/_mocha"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
