@@ -6,6 +6,9 @@ let request = require("request-promise"),
     errorCodes = require("./codes/error");
 
 /**
+ * Simple order => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
+ * Complete order => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-complete-transaction
+ * Error case => response.error = [{"Code":<Integer>,"Message":<String>}]
  * @param {{
  *  MerchantOrderId,
  *  Customer: {
@@ -27,12 +30,6 @@ let request = require("request-promise"),
  * }} order
  */
 function create(order) {
-    // Simple order
-    // => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
-    // Complete order
-    // => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-complete-transaction
-    // Error case
-    // => response.error = [{"Code":<Integer>,"Message":<String>}]
     return request({
         method: "POST",
         uri: process.env.CIELO_API_URL + "1/sales/",
