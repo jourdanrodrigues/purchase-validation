@@ -9,6 +9,7 @@ const PORT = process.env.PORT || "8080";
 
 let app = require("express")(),
     performPayment = require("./performPayment"),
+    status = require("./httpStatus"),
     errorCodes = require("./codes/error"),
     successCodes = require("./codes/success");
 
@@ -32,14 +33,21 @@ app.post("/api/v1/payments/", function (request, response) {
             },
             /**
              * @param {{
+             *  statusCode,
              *  error: {Code}
              * }} paymentResponse
              */
             (paymentResponse) => {
-                let errorInfo = errorCodes("cielo", paymentResponse);
+                if (paymentResponse.statusCode === status.HTTP_500_INTERNAL_SERVER_ERROR) {
+                    response.statusCode = paymentResponse.statusCode;
+                    response.send("Ocorreu um erro no serviço de pagamento.");
+                }
+                else {
+                    let errorInfo = errorCodes("cielo", paymentResponse);
 
-                response.statusCode = errorInfo.httpStatus;
-                response.send(errorInfo.data);
+                    response.statusCode = errorInfo.httpStatus;
+                    response.send(errorInfo.data);
+                }
             }
         );
 });
