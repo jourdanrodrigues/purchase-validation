@@ -5,7 +5,8 @@ let chai = require("chai"),
     chaiHttp = require("chai-http");
 
 let status = require("../../httpStatus"),
-    server = require("../../index");
+    server = require("../../index"),
+    utils = require("../../utils");
 
 chai.use(chaiHttp);
 
@@ -30,11 +31,11 @@ describe("Credit card sale", () => {
                 }
             }
         },
-        originalCreditCard = requestData.order.Payment.CreditCard.CardNumber;
+        originalRequestData = utils.deepCopy(requestData);
 
     afterEach(() => {
         // If the value doesn't come back to original, it passes to the next test with the set value
-        requestData.order.Payment.CreditCard.CardNumber = originalCreditCard;
+        requestData = utils.deepCopy(originalRequestData);
     });
 
     it("should fail due to expired credit card", (done) => {
@@ -162,54 +163,25 @@ describe("Credit card sale", () => {
     });
 
     it("should be created in a complete transaction with credit card", (done) => {
-        let requestData = {
-            order: {
-                MerchantOrderId: "2014111703",
-                Customer: {
-                    Name: "Comprador Teste",
-                    Identity: "11225468954",
-                    IdentityType: "CPF",
-                    Email: "compradorteste@teste.com",
-                    Birthdate: "1991-01-02",
-                    Address: {
-                        Street: "Rua Teste",
-                        Number: "123",
-                        Complement: "AP 123",
-                        ZipCode: "12345987",
-                        City: "Rio de Janeiro",
-                        State: "RJ",
-                        Country: "BRA"
-                    },
-                    DeliveryAddress: {
-                        Street: "Rua Teste",
-                        Number: "123",
-                        Complement: "AP 123",
-                        ZipCode: "12345987",
-                        City: "Rio de Janeiro",
-                        State: "RJ",
-                        Country: "BRA"
-                    }
-                },
-                Payment: {
-                    Type: "CreditCard",
-                    Amount: 15700,
-                    ServiceTaxAmount: 0,
-                    Installments: 1,
-                    Interest: "ByMerchant",
-                    Capture: true,
-                    Authenticate: false,
-                    SoftDescriptor: "tst",
-                    Currency: "BRL",
-                    CreditCard: {
-                        CardNumber: "0000000000000004",
-                        Holder: "Teste Holder",
-                        ExpirationDate: "12/2021",
-                        SecurityCode: "123",
-                        SaveCard: "false",
-                        Brand: "Visa"
-                    }
-                }
-            }
+        requestData.order.Customer.Identity = "11225468954";
+        requestData.order.Customer.IdentityType = "CPF";
+        requestData.order.Customer.Email = "compradorteste@teste.com";
+        requestData.order.Customer.Birthdate = "1991-01-02";
+        requestData.order.Payment.ServiceTaxAmount = 0;
+        requestData.order.Payment.Interest = "ByMerchant";
+        requestData.order.Payment.Capture = true;
+        requestData.order.Payment.Authenticate = false;
+        requestData.order.Payment.SoftDescriptor = "tst";
+        requestData.order.Payment.Currency = "BRL";
+        requestData.order.Payment.CreditCard.SaveCard = "false";
+        requestData.order.Customer.Address = {
+            Street: "Rua Teste",
+            Number: "123",
+            Complement: "AP 123",
+            ZipCode: "12345987",
+            City: "Rio de Janeiro",
+            State: "RJ",
+            Country: "BRA"
         };
 
         chai.request(server)
