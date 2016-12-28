@@ -1,6 +1,9 @@
 "use strict";
 
-let request = require("request-promise");
+let request = require("request-promise"),
+    status = require("./httpStatus"),
+    successCodes = require("./codes/success"),
+    errorCodes = require("./codes/error");
 
 /**
  * @param {{
@@ -23,7 +26,7 @@ let request = require("request-promise");
  *  }
  * }} order
  */
-module.exports = function (order) {
+function create(order) {
     // Simple order
     // => https://developercielo.github.io/Webservice-3.0/english.html?json#creating-a-simple-transaction
     // Complete order
@@ -41,4 +44,46 @@ module.exports = function (order) {
         body: order,
         json: true
     });
+}
+
+/**
+ * @param {{
+ *  Payment: {
+ *      ReturnCode
+ *  }
+ * }} paymentResponse
+ * @param {{ statusCode, send }} requestResponse
+ */
+function successfulResponse(requestResponse, paymentResponse) {
+    let successInfo = successCodes("cielo", paymentResponse);
+
+    requestResponse.statusCode = successInfo.httpStatus;
+    requestResponse.send(successInfo.data)
+}
+
+
+/**
+ * @param {{
+ *  statusCode,
+ *  error: {Code}
+ * }} paymentResponse
+ * @param {{ statusCode, send }} requestResponse
+ */
+function erroneousResponse(requestResponse, paymentResponse) {
+    if (paymentResponse.statusCode === status.HTTP_500_INTERNAL_SERVER_ERROR) {
+        requestResponse.statusCode = paymentResponse.statusCode;
+        requestResponse.send("Ocorreu um erro no serviço de pagamento.");
+    }
+    else {
+        let errorInfo = errorCodes("cielo", paymentResponse);
+
+        requestResponse.statusCode = errorInfo.httpStatus;
+        requestResponse.send(errorInfo.data);
+    }
+}
+
+module.exports = {
+    create: create,
+    successfulResponse: successfulResponse,
+    erroneousResponse: erroneousResponse
 };

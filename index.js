@@ -8,46 +8,18 @@ if (require("fs").existsSync(".env")) {
 const PORT = process.env.PORT || "8080";
 
 let app = require("express")(),
-    performPayment = require("./performPayment"),
-    status = require("./httpStatus"),
-    errorCodes = require("./codes/error"),
-    successCodes = require("./codes/success");
+    Payment = require("./payment");
 
 app.use(require('body-parser').json());
 
 app.post("/api/v1/payments/", function (request, response) {
-    performPayment(request.body)
+    Payment.create(request.body)
         .then(
-            /**
-             * @param {{
-             *  Payment: {
-             *      ReturnCode
-             *  }
-             * }} paymentResponse
-             */
             (paymentResponse) => {
-                let successInfo = successCodes("cielo", paymentResponse);
-
-                response.statusCode = successInfo.httpStatus;
-                response.send(successInfo.data)
+                Payment.successfulResponse(response, paymentResponse)
             },
-            /**
-             * @param {{
-             *  statusCode,
-             *  error: {Code}
-             * }} paymentResponse
-             */
             (paymentResponse) => {
-                if (paymentResponse.statusCode === status.HTTP_500_INTERNAL_SERVER_ERROR) {
-                    response.statusCode = paymentResponse.statusCode;
-                    response.send("Ocorreu um erro no serviço de pagamento.");
-                }
-                else {
-                    let errorInfo = errorCodes("cielo", paymentResponse);
-
-                    response.statusCode = errorInfo.httpStatus;
-                    response.send(errorInfo.data);
-                }
+                Payment.erroneousResponse(response, paymentResponse)
             }
         );
 });
