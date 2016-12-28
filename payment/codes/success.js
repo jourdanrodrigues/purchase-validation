@@ -1,6 +1,6 @@
 "use strict";
 
-let status = require("../httpStatus");
+let status = require("../../assets/httpStatus");
 
 let successData = {
     "cielo": {

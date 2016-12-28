@@ -1,7 +1,7 @@
 "use strict";
 
 let request = require("request-promise"),
-    status = require("./httpStatus"),
+    status = require("./../assets/httpStatus"),
     successCodes = require("./codes/success"),
     errorCodes = require("./codes/error");
 
