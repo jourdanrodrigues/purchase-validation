@@ -10,25 +10,27 @@ let status = require("../../httpStatus"),
 chai.use(chaiHttp);
 
 describe("Credit card sale", () => {
-    it("should fail due to expired credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000003",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
+    let orderData = {
+        MerchantOrderId: "2014111703",
+        Customer: {
+            Name: "Comprador Teste"
+        },
+        Payment: {
+            Type: "CreditCard",
+            Amount: 15700,
+            Installments: 1,
+            CreditCard: {
+                CardNumber: "0000000000000001",
+                Holder: "Teste Holder",
+                ExpirationDate: "12/2021",
+                SecurityCode: "123",
+                Brand: "Visa"
             }
-        };
+        }
+    };
+
+    it("should fail due to expired credit card", (done) => {
+        orderData.Payment.CreditCard.CardNumber = "0000000000000003";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -44,24 +46,7 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to unauthorized credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000002",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Payment.CreditCard.CardNumber = "0000000000000002";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -77,24 +62,7 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to locked credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000005",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Payment.CreditCard.CardNumber = "0000000000000005";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -110,24 +78,7 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to cancelled credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000007",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Payment.CreditCard.CardNumber = "0000000000000007";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -143,24 +94,7 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to problems with the credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000008",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Payment.CreditCard.CardNumber = "0000000000000008";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -176,24 +110,7 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to timeout with credit card (not authorized)", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000006",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Payment.CreditCard.CardNumber = "0000000000000006";
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -209,25 +126,6 @@ describe("Credit card sale", () => {
     });
 
     it("should be created in a simple transaction with credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000001",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
-
         chai.request(server)
             .post("/api/v1/payments/")
             .send(orderData)
@@ -241,25 +139,7 @@ describe("Credit card sale", () => {
     });
 
     it("should be created in a authenticated transaction with credit card", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111703",
-            Customer: {
-                Name: "Comprador Teste",
-                Authenticate: true
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 15700,
-                Installments: 1,
-                CreditCard: {
-                    CardNumber: "0000000000000001",
-                    Holder: "Teste Holder",
-                    ExpirationDate: "12/2021",
-                    SecurityCode: "123",
-                    Brand: "Visa"
-                }
-            }
-        };
+        orderData.Customer.Authenticate = true;
 
         chai.request(server)
             .post("/api/v1/payments/")
@@ -335,22 +215,10 @@ describe("Credit card sale", () => {
     });
 
     it("should fail due to credit card by token not found", (done) => {
-        let orderData = {
-            MerchantOrderId: "2014111706",
-            Customer: {
-                Name: "Comprador Teste"
-            },
-            Payment: {
-                Type: "CreditCard",
-                Amount: 100,
-                Installments: 1,
-                SoftDescriptor: "tst",
-                CreditCard: {
-                    CardToken: "6e1bf77a-b28b-4660-b14f-455e2a1c95e9",
-                    SecurityCode: "262",
-                    Brand: "Visa"
-                }
-            }
+        orderData.Payment.CreditCard = {
+            CardToken: "6e1bf77a-b28b-4660-b14f-455e2a1c95e9",
+            SecurityCode: "262",
+            Brand: "Visa"
         };
 
         chai.request(server)
