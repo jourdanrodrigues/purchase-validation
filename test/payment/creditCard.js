@@ -27,7 +27,13 @@ describe("Credit card sale", () => {
                 Brand: "Visa"
             }
         }
-    };
+    },
+        originalCreditCard = orderData.Payment.CreditCard.CardNumber;
+
+    afterEach(() => {
+        // If the value doesn't come back to original, it passes to the next test with the set value
+        orderData.Payment.CreditCard.CardNumber = originalCreditCard;
+    });
 
     it("should fail due to expired credit card", (done) => {
         orderData.Payment.CreditCard.CardNumber = "0000000000000003";
