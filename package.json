@@ -1,6 +1,8 @@
 {
   "name": "yzzer-purchase-validation",
   "version": "0.0.1",
+  "repository": "https://github.com/jourdanrodrigues/purchase-validation",
+  "license": "MIT",
   "engines": {
     "node": "6.9.1"
   },
