@@ -42,14 +42,6 @@ function create(order) {
     });
 }
 
-/**
- * @param {{
- *  Payment: {
- *      ReturnCode
- *  }
- * }} paymentResponse
- * @param {{ statusCode, send }} requestResponse
- */
 function successfulResponse(requestResponse, paymentResponse) {
     let successInfo = responses.success(paymentResponse);
 
@@ -57,14 +49,6 @@ function successfulResponse(requestResponse, paymentResponse) {
     requestResponse.send(successInfo.data)
 }
 
-
-/**
- * @param {{
- *  statusCode,
- *  error: {Code}
- * }} paymentResponse
- * @param {{ statusCode, send }} requestResponse
- */
 function erroneousResponse(requestResponse, paymentResponse) {
     if (paymentResponse.statusCode === status.HTTP_500_INTERNAL_SERVER_ERROR) {
         requestResponse.statusCode = paymentResponse.statusCode;
