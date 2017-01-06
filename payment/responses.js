@@ -23,6 +23,10 @@ let successData = {
     99: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Não autorizada."} // Time out
 };
 
+/**
+ * @param {Response, {Payment: {ReturnCode}}} responseData
+ * @returns {{httpStatus: *, data: {data: *, detail}}}
+ */
 function getSuccess(responseData) {
     let data = successData[responseData.Payment.ReturnCode];
     return {
@@ -34,6 +38,10 @@ function getSuccess(responseData) {
     }
 }
 
+/**
+ * @param {Response, {error: {Code}[]}} responseData
+ * @returns {{httpStatus: *, data: {code: (*|string|String), detail}}}
+ */
 function getError(responseData) {
     let code = responseData.error[0].Code,
         data = errorData[code];
