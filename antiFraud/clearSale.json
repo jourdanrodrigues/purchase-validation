@@ -1,0 +1,184 @@
+{
+  "ClearSale": {
+    "Orders": {
+      "Order": {
+        "ID": null,
+        "FingerPrint": {
+          "SessionID": null
+        },
+        "Date": null,
+        "Email": null,
+        "B2B_B2C": null,
+        "ShippingPrice": null,
+        "TotalItems": null,
+        "TotalOrder": null,
+        "QtyInstallments": null,
+        "DeliveryTimeCD": null,
+        "QtyItems": null,
+        "QtyPaymentTypes": null,
+        "IP": null,
+        "ShippingType": null,
+        "Gift": null,
+        "GiftMessage": null,
+        "Obs": null,
+        "Status": null,
+        "Reanalise": null,
+        "Origin": null,
+        "ReservationDate": null,
+        "Country": null,
+        "Nationality": null,
+        "Product": null,
+        "ListTypeID": null,
+        "ListID": null,
+        "BillingData": {
+          "ID": null,
+          "Type": null,
+          "LegalDocument1": null,
+          "LegalDocument2": null,
+          "Name": null,
+          "BirthDate": null,
+          "Email": null,
+          "Gender": null,
+          "Address": {
+            "Street": null,
+            "Number": null,
+            "Comp": null,
+            "County": null,
+            "City": null,
+            "State": null,
+            "Country": null,
+            "ZipCode": null,
+            "Reference": null
+          },
+          "Phones": [
+            {
+              "Phone": {
+                "Type": null,
+                "DDI": null,
+                "DDD": null,
+                "Number": null,
+                "Extension": null
+              }
+            }
+          ]
+        },
+        "ShippingData": {
+          "ID": null,
+          "Type": null,
+          "LegalDocument1": null,
+          "LegalDocument2": null,
+          "Name": null,
+          "BirthDate": null,
+          "Email": null,
+          "Gender": null,
+          "Address": {
+            "Street": null,
+            "Number": null,
+            "Comp": null,
+            "County": null,
+            "City": null,
+            "State": null,
+            "Country": null,
+            "ZipCode": null,
+            "Reference": null
+          },
+          "Phones": [
+            {
+              "Phone": {
+                "Type": null,
+                "DDI": null,
+                "DDD": null,
+                "Number": null,
+                "Extension": null
+              }
+            }
+          ]
+        },
+        "Payments": [
+          {
+            "Payment": {
+              "Sequential": null,
+              "Date": null,
+              "Amount": null,
+              "PaymentTypeID": null,
+              "QtyInstallments": null,
+              "Interest": null,
+              "InterestValue": null,
+              "CardNumber": null,
+              "CardBin": null,
+              "CardEndNumber": null,
+              "CardType": null,
+              "CardExpirationDate": null,
+              "Name": null,
+              "LegalDocument": null,
+              "Nsu": null,
+              "Currency": null,
+              "Address": {
+                "Street": null,
+                "Number": null,
+                "Comp": null,
+                "County": null,
+                "City": null,
+                "State": null,
+                "Country": null,
+                "ZipCode": null
+              }
+            }
+          }
+        ],
+        "Items": [
+          {
+            "Item": {
+              "ID": null,
+              "Name": null,
+              "ItemValue": null,
+              "Qty": null,
+              "GiftTypeID": null,
+              "CategoryID": null,
+              "CategoryName": null
+            }
+          }
+        ],
+        "Passengers": [
+          {
+            "Passenger": {
+              "Name": null,
+              "FrequentFlyerCard": null,
+              "LegalDocumentType": null,
+              "LegalDocument": null,
+              "BirthDate": null
+            }
+          }
+        ],
+        "Connections": [
+          {
+            "Connection": {
+              "Company": null,
+              "FlightNumber": null,
+              "FlightDate": null,
+              "Class": null,
+              "From": null,
+              "To": null,
+              "DepartureDate": null,
+              "ArrivalDate": null
+            }
+          }
+        ],
+        "HotelReservations": [
+          {
+            "HotelReservation": {
+              "Hotel": null,
+              "City": null,
+              "State": null,
+              "Country": null,
+              "ReservationDate": null,
+              "ReservationExpirationDate": null,
+              "CheckInDate": null,
+              "CheckOutDate": null
+            }
+          }
+        ]
+      }
+    }
+  }
+}
