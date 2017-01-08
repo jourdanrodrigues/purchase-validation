@@ -1,7 +1,5 @@
 root = true
 
 [*]
-indent_size = 4
-
-[*.{json,yml}]
 indent_size = 2
+insert_final_newline = true
