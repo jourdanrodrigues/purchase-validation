@@ -1,4 +1,4 @@
-{
+module.exports = {
   "ClearSale": {
     "Orders": {
       "Order": {
@@ -181,4 +181,4 @@
       }
     }
   }
-}
+};
