@@ -7,9 +7,9 @@
  * @param defaultValue
  */
 function pop(object, attribute, defaultValue) {
-    let attributeValue = object[attribute];
-    delete object[attribute];
-    return attributeValue || defaultValue;
+  let attributeValue = object[attribute];
+  delete object[attribute];
+  return attributeValue || defaultValue;
 }
 
 /**
@@ -18,10 +18,10 @@ function pop(object, attribute, defaultValue) {
  * @return {Object}
  */
 function deepCopy(object) {
-    return JSON.parse(JSON.stringify(object));
+  return JSON.parse(JSON.stringify(object));
 }
 
 module.exports = {
-    pop: pop,
-    deepCopy: deepCopy
+  pop: pop,
+  deepCopy: deepCopy
 };

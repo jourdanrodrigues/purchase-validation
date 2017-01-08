@@ -8,6 +8,9 @@
 [![dependencies-badge]][dependencies]
 [![dev-dependencies-badge]][dev-dependencies]
 
+Using [AirBNB's code style][airbnb-js-code-style].
+
+[airbnb-js-code-style]: https://github.com/airbnb/javascript
 [codecov-master-badge]: https://codecov.io/gh/jourdanrodrigues/purchase-validation/branch/master/graph/badge.svg
 [codecov-master]: https://codecov.io/gh/jourdanrodrigues/purchase-validation
 [codecov-development-badge]: https://codecov.io/gh/jourdanrodrigues/purchase-validation/branch/development/graph/badge.svg
