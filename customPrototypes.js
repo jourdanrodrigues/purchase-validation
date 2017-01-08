@@ -1,5 +1,5 @@
 module.exports = () => {
-  Date.prototype.toSimpleDateTime = function () {
+  Date.prototype.toSimpleDateTimeString = function () {
     return this.toISOString().slice(0, -5);
   };
 };
