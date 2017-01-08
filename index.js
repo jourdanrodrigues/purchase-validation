@@ -7,6 +7,9 @@ if (require("fs").existsSync(".env")) {
 
 const PORT = process.env.PORT || "8080";
 
+// Load custom prototypes
+require("./customPrototypes")();
+
 let app = require("express")(),
   Payment = require("./payment"),
   AntiFraud = require("./antiFraud");
