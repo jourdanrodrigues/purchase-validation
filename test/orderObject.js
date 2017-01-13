@@ -1,5 +1,6 @@
 let nowDateObject = new Date();
 
+// The upper cases DO matter!
 module.exports = {
   sessionId: "123",
   order: {
