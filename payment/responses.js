@@ -15,6 +15,7 @@ let successData = {
   // http://developercielo.github.io/Webservice-3.0/english.html#return-codes
   2: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito não autorizado."},
   4: {httpStatus: status.HTTP_201_CREATED, message: "Operação realizada com sucesso."}, // Simple transaction
+  5: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito inadimplente."},
   6: {httpStatus: status.HTTP_201_CREATED, message: "Operação realizada com sucesso."}, // Complete transaction
   57: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Cartão de crédito expirado."},
   70: {httpStatus: status.HTTP_400_BAD_REQUEST, message: "Problemas com o cartão de crédito."},
@@ -28,7 +29,7 @@ let successData = {
  * @returns {{httpStatus: *, data: {data: *, detail}}}
  */
 function getSuccess(responseData) {
-  let data = successData[responseData.Payment.ReturnCode];
+  let data = successData[parseInt(responseData.Payment.ReturnCode)];
   return {
     httpStatus: data.httpStatus,
     data: {

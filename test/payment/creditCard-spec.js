@@ -39,7 +39,7 @@ describe("Credit card sale", () => {
       });
   });
 
-  it("should fail due to unauthorized credit card", (done) => {
+  it("should fail due to defaulting credit card (wrong according to Cielo doc...)", (done) => {
     requestData.order.Payment.CreditCard.CardNumber = "0000000000000002";
 
     chai.request(server)
@@ -49,8 +49,8 @@ describe("Credit card sale", () => {
         response.should.have.status(status.HTTP_400_BAD_REQUEST);
         response.body.should.be.a("object");
         response.body.data.should.be.a("object");
-        response.body.data.Payment.ReturnCode.should.be.eql("2");
-        response.body.detail.should.be.eql("Cartão de crédito não autorizado.");
+        response.body.data.Payment.ReturnCode.should.be.eql("05");
+        response.body.detail.should.be.eql("Cartão de crédito inadimplente.");
         done();
       });
   });
@@ -185,7 +185,7 @@ describe("Credit card sale", () => {
       .end((error, response) => {
         response.should.have.status(status.HTTP_400_BAD_REQUEST);
         response.body.should.be.a("object");
-        response.body.code.should.be.eql("130");
+        response.body.code.should.be.eql("c130");
         response.body.detail.should.be.eql("Cartão de crédito não encontrado.");
         done()
       })
