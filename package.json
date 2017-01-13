@@ -1,5 +1,5 @@
 {
-  "name": "yzzer-purchase-validation",
+  "name": "purchase-validation",
   "version": "0.0.1",
   "repository": "https://github.com/jourdanrodrigues/purchase-validation",
   "license": "MIT",
@@ -15,7 +15,8 @@
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "chai": "^3.5.0",
