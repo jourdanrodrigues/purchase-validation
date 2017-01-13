@@ -48,7 +48,7 @@ function getError(responseData) {
   return {
     httpStatus: data.httpStatus,
     data: {
-      code: code.toString(),
+      code: `c${code.toString()}`,
       detail: data.message
     }
   }
