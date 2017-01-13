@@ -7,19 +7,38 @@ if (require("fs").existsSync(".env")) {
 
 const PORT = process.env.PORT || "8080";
 
+// Load custom prototypes
+require("./customPrototypes")();
+
 let app = require("express")(),
-  Payment = require("./payment");
+  Payment = require("./payment"),
+  AntiFraud = require("./antiFraud");
 
 app.use(require("body-parser").json());
 
 app.post("/api/v1/payments/", function (request, response) {
-  Payment.create(request.body.order)
+  AntiFraud.check(request.body)
     .then(
-      (paymentResponse) => {
-        Payment.successfulResponse(response, paymentResponse)
+      (checkResponse) => {
+        let checkResponseData = AntiFraud.successfulResponse(checkResponse);
+
+        if (parseInt(checkResponseData.StatusCode[0])) {
+          AntiFraud.erroneousResponse(response, checkResponseData);
+        }
+        else {
+          Payment.create(request.body.order)
+            .then(
+              (paymentResponse) => {
+                Payment.successfulResponse(response, paymentResponse)
+              },
+              (paymentResponse) => {
+                Payment.erroneousResponse(response, paymentResponse)
+              }
+            );
+        }
       },
-      (paymentResponse) => {
-        Payment.erroneousResponse(response, paymentResponse)
+      (checkResponse) => {
+        Payment.erroneousResponse(response, checkResponse);
       }
     );
 });
