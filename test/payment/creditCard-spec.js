@@ -11,79 +11,12 @@ let status = require("../../assets/httpStatus"),
 chai.use(chaiHttp);
 
 describe("Credit card sale", () => {
-  let nowDateObject = new Date();
-  let requestData = {
-      sessionId: "123",
-      order: {
-        MerchantOrderId: (new Date()).getTime(), // Id never equal
-        reservationDate: nowDateObject.toSimpleDateTimeString(),
-        unitValue: 15700,
-        unitQuantity: 1,
-        passengers: [
-          {
-            name: "Fly Peterson",
-            documentType: "CPF",
-            document: "12345678912"
-          }
-        ],
-        connections: [
-          {
-            company: "Azul",
-            flightNumber: 1,
-            flightDate: "2017-01-15T21:40:00",
-            class: "Economic",
-            to: "LHR",
-            from: "GRU",
-            departureDate: "2017-01-15T21:40:00",
-            arrivalDate: "2017-01-16T00:40:00"
-          }
-        ],
-        hotelReservations: [
-          {
-            hotelName: "Haymarket Hotel",
-            city: "London",
-            state: "London",
-            country: "England",
-            reservationDate: "2017-01-16T22:40:00",
-            reservationExpirationDate: "2017-01-17T21:40:00",
-            checkInDate: "2017-01-16T22:40:00",
-            checkOutDate: "2017-01-18T22:40:00"
-          }
-        ],
-        Customer: {
-          Name: "Comprador Teste",
-          Phones: [
-            {
-              DDD: 85,
-              Number: "985858585"
-            }
-          ],
-          Address: {
-            Street: "Rua Miguel de Paiva",
-            Number: "606",
-            Complement: "",
-            County: "Santa Teresa",
-            ZipCode: "20251-370",
-            City: "Rio de Janeiro",
-            State: "RJ",
-            Country: "BRA"
-          }
-        },
-        Payment: {
-          Type: "CreditCard",
-          Amount: 15700,
-          Installments: 1,
-          CreditCard: {
-            CardNumber: "0000000000000001",
-            Holder: "Teste Holder",
-            ExpirationDate: "12/2021",
-            SecurityCode: "123",
-            Brand: "Visa"
-          }
-        }
-      }
-    },
+  let requestData = require("../orderObject"),
     originalRequestData = utils.deepCopy(requestData);
+
+  beforeEach(() => {
+    requestData.order.MerchantOrderId = (new Date()).getTime(); // Id never equal
+  });
 
   afterEach(() => {
     // If the value doesn't come back to original, it passes to the next test with the set value

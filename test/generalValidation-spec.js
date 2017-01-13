@@ -11,9 +11,7 @@ chai.use(chaiHttp);
 
 describe("General validations for sale", () => {
   it("should fail to create due to merchant ID not in GUID format", (done) => {
-    let requestData = {
-      order: {}
-    };
+    let requestData = require("./orderObject");
 
     let environmentMerchantId = process.env.CIELO_MERCHANT_ID;
     process.env.CIELO_MERCHANT_ID = "not-the-right-format";
