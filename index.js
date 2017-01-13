@@ -20,19 +20,25 @@ app.post("/api/v1/payments/", function (request, response) {
   AntiFraud.check(request.body)
     .then(
       (checkResponse) => {
-        AntiFraud.endResponse(response, checkResponse);
+        let checkResponseData = AntiFraud.successfulResponse(checkResponse);
+
+        if (parseInt(checkResponseData.StatusCode[0])) {
+          AntiFraud.erroneousResponse(response, checkResponseData);
+        }
+        else {
+          Payment.create(request.body.order)
+            .then(
+              (paymentResponse) => {
+                Payment.successfulResponse(response, paymentResponse)
+              },
+              (paymentResponse) => {
+                Payment.erroneousResponse(response, paymentResponse)
+              }
+            );
+        }
       },
       (checkResponse) => {
-        AntiFraud.endResponse(response, checkResponse);
-      }
-    );
-  Payment.create(request.body.order)
-    .then(
-      (paymentResponse) => {
-        Payment.successfulResponse(response, paymentResponse)
-      },
-      (paymentResponse) => {
-        Payment.erroneousResponse(response, paymentResponse)
+        Payment.erroneousResponse(response, checkResponse);
       }
     );
 });

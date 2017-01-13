@@ -1,6 +1,6 @@
 "use strict";
 
-let status = require("../assets/httpStatus"),
+let responses = require("./responses"),
   utils = require("../assets/utils.js"),
   clearSaleStructure = require("./requestDataStructure"),
   cardBrands = require("./cardBrands"),
@@ -104,17 +104,44 @@ function check(requestBody) {
   });
 }
 
-function endResponse(requestResponse, paymentResponse) {
-  requestResponse.statusCode = status.HTTP_200_OK;
+/**
+ * @param paymentResponse
+ * @return {{
+ *  TransactionID, StatusCode[]
+ * }}
+ */
+function successfulResponse(paymentResponse) {
+  let mainData = null;
 
-  XMLParser(paymentResponse, function (error, result) {
-    XMLParser(result.string._, function (error, result2) {
-      requestResponse.send(result2);
-    });
-  });
+  XMLParser(paymentResponse,
+    /**
+     * @param error
+     * @param {{
+     *  string: {_}
+     * }} data
+     */
+    (error, data) => {
+      XMLParser(data.string._, (error, data) => {
+        mainData = data["PackageStatus"];
+      });
+    }
+  );
+
+  return mainData;
+}
+
+/**
+ * @param response
+ * @param {{StatusCode: []}} checkResponseData
+ */
+function erroneousResponse(response, checkResponseData) {
+  let errorData = responses.getError(checkResponseData.StatusCode[0]);
+  response.statusCode = errorData.httpStatus;
+  response.send(errorData.data)
 }
 
 module.exports = {
   check: check,
-  endResponse: endResponse
+  successfulResponse: successfulResponse,
+  erroneousResponse: erroneousResponse
 };
