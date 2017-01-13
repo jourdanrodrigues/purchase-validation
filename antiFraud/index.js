@@ -2,7 +2,7 @@
 
 let status = require("../assets/httpStatus"),
   utils = require("../assets/utils.js"),
-  clearSaleStructure = require("./clearSale"),
+  clearSaleStructure = require("./requestDataStructure"),
   cardBrands = require("./cardBrands"),
   documentTypes = require("./documentTypes"),
   xml2js = require("xml2js"),
