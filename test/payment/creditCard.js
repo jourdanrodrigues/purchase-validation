@@ -15,7 +15,7 @@ describe("Credit card sale", () => {
   let requestData = {
       sessionId: "123",
       order: {
-        MerchantOrderId: "2014111703",
+        MerchantOrderId: (new Date()).getTime(), // Id never equal
         reservationDate: nowDateObject.toSimpleDateTimeString(),
         unitValue: 15700,
         unitQuantity: 1,
