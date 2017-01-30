@@ -154,20 +154,20 @@ module.exports = {
           //   }
           // }
         ],
-        HotelReservations: [
-          // {
-          //   HotelReservation: {
-          //     Hotel: null,
-          //     City: null,
-          //     State: null,
-          //     Country: null,
-          //     ReservationDate: null,
-          //     ReservationExpirationDate: null,
-          //     CheckInDate: null,
-          //     CheckOutDate: null
-          //   }
-          // }
-        ]
+        // HotelReservations: [
+        //   // {
+        //   //   HotelReservation: {
+        //   //     Hotel: null,
+        //   //     City: null,
+        //   //     State: null,
+        //   //     Country: null,
+        //   //     ReservationDate: null,
+        //   //     ReservationExpirationDate: null,
+        //   //     CheckInDate: null,
+        //   //     CheckOutDate: null
+        //   //   }
+        //   // }
+        // ]
       }
     }
   }
