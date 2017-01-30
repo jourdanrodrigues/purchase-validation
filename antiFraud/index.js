@@ -78,22 +78,6 @@ function check(requestBody) {
     })
   }
 
-  for (let i = 0; i < requestBody.order.hotelReservations.length; i++) {
-    let hotelReservation = requestBody.order.hotelReservations[i];
-    csOrder.HotelReservations.push({
-      HotelReservation: {
-        Hotel: hotelReservation.hotelName,
-        City: hotelReservation.city,
-        State: hotelReservation.state,
-        Country: hotelReservation.country,
-        ReservationDate: hotelReservation.reservationDate,
-        ReservationExpirationDate: hotelReservation.reservationExpirationDate,
-        CheckInDate: hotelReservation.checkInDate,
-        CheckOutDate: hotelReservation.checkOutDate
-      }
-    })
-  }
-
   return request({
     method: "POST",
     uri: `${process.env.CLEAR_SALE_API_URL}/SendOrders`,
