@@ -32,5 +32,6 @@ function sleep(seconds) {
 
 module.exports = {
   pop: pop,
-  deepCopy: deepCopy
+  deepCopy: deepCopy,
+  sleep:sleep
 };
