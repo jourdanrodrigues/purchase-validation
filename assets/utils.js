@@ -21,7 +21,17 @@ function deepCopy(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
+/**
+ * Perform a delay promise based
+ * @param {int} seconds - Seconds to sleep
+ * @return {Promise}
+ */
+function sleep(seconds) {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000 /* In milliseconds */));
+}
+
 module.exports = {
   pop: pop,
-  deepCopy: deepCopy
+  deepCopy: deepCopy,
+  sleep:sleep
 };
