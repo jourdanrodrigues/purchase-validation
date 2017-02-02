@@ -105,6 +105,20 @@ function check(requestBody) {
 }
 
 /**
+ * @param {String} orderID
+ */
+function getOrderStatus(orderID) {
+  return request({
+    method: "POST",
+    uri: `${process.env.CLEAR_SALE_API_URL}/GetOrderStatus`,
+    form: {
+      entityCode: process.env.CLEAR_SALE_ENTITY_CODE,
+      orderID: orderID
+    }
+  });
+}
+
+/**
  * @param paymentResponse
  * @return {{
  *  TransactionID, StatusCode[]
@@ -122,7 +136,7 @@ function successfulResponse(paymentResponse) {
      */
     (error, data) => {
       XMLParser(data.string._, (error, data) => {
-        mainData = data["PackageStatus"];
+        mainData = data["PackageStatus"] || data["ClearSale"];
       });
     }
   );
@@ -140,8 +154,18 @@ function erroneousResponse(response, checkResponseData) {
   response.send(errorData.data)
 }
 
+function orderNotReadyResponse(requestResponse, orderStatusResponse) {
+  console.log(JSON.stringify(orderStatusResponse));
+  let statusInfo = responses.getOrderCode(orderStatusResponse.Orders[0].Order[0].Status[0]);
+
+  requestResponse.statusCode = statusInfo.httpStatus;
+  requestResponse.send(statusInfo.data);
+}
+
 module.exports = {
   check: check,
+  getOrderStatus: getOrderStatus,
   successfulResponse: successfulResponse,
+  orderNotReadyResponse: orderNotReadyResponse,
   erroneousResponse: erroneousResponse
 };
