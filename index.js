@@ -46,7 +46,7 @@ app.post("/api/v1/payments/", function (request, response) {
                         );
                     }
                     else {
-                      AntiFraud.orderNotReadyResponse(response, checkOrderStatusResponseData)
+                      AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData)
                     }
                   },
                   (orderStatusResponse) => {
@@ -57,11 +57,24 @@ app.post("/api/v1/payments/", function (request, response) {
             () => undefined); // Think nothing could go wrong with the "sleep" promise
         }
         else {
-          AntiFraud.orderNotReadyResponse(response, checkResponseData);
+          AntiFraud.orderStatusResponse(response, checkResponseData);
         }
       },
       (checkResponse) => {
         Payment.erroneousResponse(response, checkResponse);
+      }
+    );
+});
+
+app.get("/api/v1/orders/:id/status/", function (request, response) {
+  AntiFraud.getOrderStatus(request.params.id)
+    .then(
+      (orderStatusResponse) => {
+        let checkOrderStatusResponseData = AntiFraud.successfulResponse(orderStatusResponse);
+        AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData);
+      },
+      (orderStatusResponse) => {
+        AntiFraud.erroneousResponse(response, orderStatusResponse);
       }
     );
 });

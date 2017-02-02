@@ -154,7 +154,7 @@ function erroneousResponse(response, checkResponseData) {
   response.send(errorData.data)
 }
 
-function orderNotReadyResponse(requestResponse, orderStatusResponse) {
+function orderStatusResponse(requestResponse, orderStatusResponse) {
   let statusInfo = responses.getOrderCode(orderStatusResponse.Orders[0].Order[0].Status[0]);
 
   requestResponse.statusCode = statusInfo.httpStatus;
@@ -165,6 +165,6 @@ module.exports = {
   check: check,
   getOrderStatus: getOrderStatus,
   successfulResponse: successfulResponse,
-  orderNotReadyResponse: orderNotReadyResponse,
+  orderStatusResponse: orderStatusResponse,
   erroneousResponse: erroneousResponse
 };

@@ -14,7 +14,8 @@ let statusCodes = {
 
 // OC
 let orderStatusCodes = {
-  // APA & APM: This code means that the order is accepted and the purchase must continue
+  APA: {message: "Aprovado automaticamente", httpStatus: status.HTTP_200_OK},
+  APM: {message: "Aprovado manualmente", httpStatus: status.HTTP_200_OK},
   RPM: {message: "Reprovado sem suspeita", httpStatus: status.HTTP_200_OK},
   AMA: {message: "Análise manual", httpStatus: status.HTTP_200_OK},
   ERR: {message: "Erro nos dados enviados", httpStatus: status.HTTP_400_BAD_REQUEST},
