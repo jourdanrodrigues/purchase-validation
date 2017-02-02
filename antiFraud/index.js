@@ -155,7 +155,6 @@ function erroneousResponse(response, checkResponseData) {
 }
 
 function orderNotReadyResponse(requestResponse, orderStatusResponse) {
-  console.log(JSON.stringify(orderStatusResponse));
   let statusInfo = responses.getOrderCode(orderStatusResponse.Orders[0].Order[0].Status[0]);
 
   requestResponse.statusCode = statusInfo.httpStatus;
