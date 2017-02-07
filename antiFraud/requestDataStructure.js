@@ -54,26 +54,26 @@ module.exports = {
             ZipCode: null,
             // Reference: null
           },
-          Phones: [
-            // {
-            //   Phone: {
-            //     /**
-            //      * 0: Undefined
-            //      * 1: Phone
-            //      * 2: Business
-            //      * 3: Message
-            //      * 4: Billing
-            //      * 5: Temporary
-            //      * 6: Mobile
-            //      */
-            //     Type: 0,
-            //     DDI: null,
-            //     DDD: null,
-            //     Number: null,
-            //     Extension: null
-            //   }
-            // }
-          ]
+          Phones: {
+            Phone: [
+              // {
+              //   /**
+              //    * 0: Undefined
+              //    * 1: Phone
+              //    * 2: Business
+              //    * 3: Message
+              //    * 4: Billing
+              //    * 5: Temporary
+              //    * 6: Mobile
+              //    */
+              //   Type: 0,
+              //   DDI: null,
+              //   DDD: null,
+              //   Number: null,
+              //   Extension: null
+              // }
+            ]
+          }
         },
         ShippingData: {/* Equals to billing data */},
         Payments: [
@@ -113,47 +113,47 @@ module.exports = {
               ID: 1,
               Name: "Flight passage",
               ItemValue: null,
-              Qty: null,
+              Qty: 1,
               // GiftTypeID: null,
               // CategoryID: null,
               // CategoryName: null
             }
           }
         ],
-        Passengers: [
-          // {
-          //   Passenger: {
-          //     Name: null,
-          //     // FrequentFlyerCard: null,
-          //     /**
-          //      * 1: CPF
-          //      * 2: CNPJ
-          //      * 3: RG
-          //      * 4: IE
-          //      * 5: Passport
-          //      * 6: CTPS
-          //      * 7: Title of voter
-          //      */
-          //     LegalDocumentType: null,
-          //     LegalDocument: null,
-          //     // BirthDate: null
-          //   }
-          // }
-        ],
-        Connections: [
-          // {
-          //   Connection: {
-          //     Company: null,
-          //     FlightNumber: null,
-          //     FlightDate: null,
-          //     Class: null,
-          //     From: null,
-          //     To: null,
-          //     DepartureDate: null,
-          //     ArrivalDate: null
-          //   }
-          // }
-        ],
+        Passengers: {
+          Passenger: [
+            // {
+            //   Name: null,
+            //   // FrequentFlyerCard: null,
+            //   /**
+            //    * 1: CPF
+            //    * 2: CNPJ
+            //    * 3: RG
+            //    * 4: IE
+            //    * 5: Passport
+            //    * 6: CTPS
+            //    * 7: Title of voter
+            //    */
+            //   LegalDocumentType: null,
+            //   LegalDocument: null,
+            //   // BirthDate: null
+            // }
+          ]
+        },
+        Connections: {
+          Connection: [
+            // {
+            //   Company: null,
+            //   FlightNumber: null,
+            //   FlightDate: null,
+            //   Class: null,
+            //   From: null,
+            //   To: null,
+            //   DepartureDate: null,
+            //   ArrivalDate: null
+            // }
+          ]
+        },
         // HotelReservations: [
         //   // {
         //   //   HotelReservation: {

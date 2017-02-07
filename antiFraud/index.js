@@ -21,9 +21,7 @@ function check(requestBody) {
   let csPayment = csOrder.Payments[0].Payment;
 
   for (let i = 0; i < requestBody.order.Customer.Phones.length; i++) {
-    csBillingData.Phones.push({
-      Phone: requestBody.order.Customer.Phones[i]
-    })
+    csBillingData.Phones.Phone.push(requestBody.order.Customer.Phones[i])
   }
 
   csOrder.ID = requestBody.order.MerchantOrderId;
@@ -48,33 +46,28 @@ function check(requestBody) {
   csPayment.Amount = amount;
   csPayment.CardType = cardBrands[requestBody.order.Payment.CreditCard.Brand.toRecognize()] || 4;
 
-  csOrder.Items[0].Item.ItemValue = requestBody.order.unitValue;
-  csOrder.Items[0].Item.Qty = requestBody.order.unitQuantity;
+  csOrder.Items[0].Item.ItemValue = amount;
 
   for (let i = 0; i < requestBody.order.passengers.length; i++) {
     let passenger = requestBody.order.passengers[i];
-    csOrder.Passengers.push({
-      Passenger: {
-        Name: passenger.name,
-        LegalDocumentType: documentTypes[passenger.documentType.toRecognize()],
-        LegalDocument: passenger.document
-      }
+    csOrder.Passengers.Passenger.push({
+      Name: passenger.name,
+      LegalDocumentType: documentTypes[passenger.documentType.toRecognize()],
+      LegalDocument: passenger.document
     })
   }
 
   for (let i = 0; i < requestBody.order.connections.length; i++) {
     let connection = requestBody.order.connections[i];
-    csOrder.Connections.push({
-      Connection: {
-        Company: connection.company,
-        FlightNumber: connection.flightNumber,
-        FlightDate: connection.flightDate,
-        Class: connection.class,
-        From: connection.from,
-        To: connection.to,
-        DepartureDate: connection.departureDate,
-        ArrivalDate: connection.arrivalDate
-      }
+    csOrder.Connections.Connection.push({
+      Company: connection.company,
+      FlightNumber: connection.flightNumber,
+      FlightDate: connection.flightDate,
+      Class: connection.class,
+      From: connection.from,
+      To: connection.to,
+      DepartureDate: connection.departureDate,
+      ArrivalDate: connection.arrivalDate
     })
   }
 
