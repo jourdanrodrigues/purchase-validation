@@ -79,6 +79,42 @@ app.get("/api/v1/orders/:id/status/", function (request, response) {
     );
 });
 
+app.post("/api/v1/orders/check/", function (request, response) {
+  AntiFraud.check(request.body)
+    .then(
+      (checkResponse) => {
+        let checkResponseData = AntiFraud.successfulResponse(checkResponse);
+
+        if (parseInt(checkResponseData.StatusCode[0])) {
+          AntiFraud.erroneousResponse(response, checkResponseData);
+        }
+        else if (checkResponseData.Orders[0].Order[0].Status[0] == "NVO") {
+          sleep(8).then( // TODO Use async/await on this promise
+            () => {
+              AntiFraud.getOrderStatus(request.body.order.MerchantOrderId)
+                .then(
+                  (orderStatusResponse) => {
+                    let checkOrderStatusResponseData = AntiFraud.successfulResponse(orderStatusResponse);
+
+                    AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData);
+                  },
+                  (orderStatusResponse) => {
+                    AntiFraud.erroneousResponse(response, orderStatusResponse);
+                  }
+                );
+            },
+            () => undefined); // Think nothing could go wrong with the "sleep" promise
+        }
+        else {
+          AntiFraud.orderStatusResponse(response, checkResponseData);
+        }
+      },
+      (checkResponse) => {
+        AntiFraud.erroneousResponse(response, checkResponse);
+      }
+    );
+});
+
 app.listen(PORT, function () {
   console.log(`Server listening on: http://localhost:${PORT}/.`);
 });
