@@ -27,18 +27,6 @@ module.exports = {
         arrivalDate: "2017-01-16T00:40:00"
       }
     ],
-    hotelReservations: [
-      {
-        hotelName: "Haymarket Hotel",
-        city: "London",
-        state: "London",
-        country: "England",
-        reservationDate: "2017-01-16T22:40:00",
-        reservationExpirationDate: "2017-01-17T21:40:00",
-        checkInDate: "2017-01-16T22:40:00",
-        checkOutDate: "2017-01-18T22:40:00"
-      }
-    ],
     Customer: {
       Name: "Comprador Teste",
       Phones: [
