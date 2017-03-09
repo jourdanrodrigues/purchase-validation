@@ -47,6 +47,9 @@ function check(requestBody) {
   csPayment.CardType = cardBrands[requestBody.order.Payment.CreditCard.Brand.toRecognize()] || 4;
   csPayment.Name = requestBody.order.Customer.Name;
   csPayment.LegalDocument = requestBody.order.Customer.Identity;
+  csPayment.CardNumber = requestBody.order.Payment.CreditCard.CardNumber;
+  csPayment.CardBin = csPayment.CardNumber.substr(-6); // First 6 digits of credit card
+  csPayment.CardExpirationDate = requestBody.order.Payment.CreditCard.ExpirationDate;
 
   csOrder.Items[0].Item.ItemValue = amount;
 
