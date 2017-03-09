@@ -136,7 +136,7 @@ module.exports = {
             //    */
             //   LegalDocumentType: null,
             //   LegalDocument: null,
-            //   // BirthDate: null
+            //   BirthDate: null
             // }
           ]
         },

@@ -53,7 +53,8 @@ function check(requestBody) {
     csOrder.Passengers.Passenger.push({
       Name: passenger.name,
       LegalDocumentType: documentTypes[passenger.documentType.toRecognize()],
-      LegalDocument: passenger.document
+      LegalDocument: passenger.document,
+      BirthDate: passenger.birthDate
     })
   }
 

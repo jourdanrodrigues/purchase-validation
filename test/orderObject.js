@@ -12,7 +12,8 @@ module.exports = {
       {
         name: "Fly Peterson",
         documentType: "CPF",
-        document: "12345678912"
+        document: "12345678912",
+        birthDate: "1996-01-15"
       }
     ],
     connections: [
