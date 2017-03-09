@@ -45,6 +45,8 @@ function check(requestBody) {
   csPayment.QtyInstallments = requestBody.order.Payment.Installments;
   csPayment.Amount = amount;
   csPayment.CardType = cardBrands[requestBody.order.Payment.CreditCard.Brand.toRecognize()] || 4;
+  csPayment.Name = requestBody.order.Customer.Name;
+  csPayment.LegalDocument = requestBody.order.Customer.Identity;
 
   csOrder.Items[0].Item.ItemValue = amount;
 
