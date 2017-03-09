@@ -12,7 +12,8 @@ require("./customPrototypes")();
 
 let app = require("express")(),
   Payment = require("./payment"),
-  AntiFraud = require("./antiFraud");
+  AntiFraud = require("./antiFraud"),
+  sleep = require("./assets/utils").sleep;
 
 app.use(require("body-parser").json());
 
@@ -25,20 +26,91 @@ app.post("/api/v1/payments/", function (request, response) {
         if (parseInt(checkResponseData.StatusCode[0])) {
           AntiFraud.erroneousResponse(response, checkResponseData);
         }
+        else if (checkResponseData.Orders[0].Order[0].Status[0] == "NVO") {
+          sleep(8).then( // TODO Use async/await on this promise
+            () => {
+              AntiFraud.getOrderStatus(request.body.order.MerchantOrderId)
+                .then(
+                  (orderStatusResponse) => {
+                    let checkOrderStatusResponseData = AntiFraud.successfulResponse(orderStatusResponse);
+
+                    if (checkOrderStatusResponseData.Orders[0].Order[0].Status[0].startsWith("AP")) {
+                      Payment.create(request.body.order)
+                        .then(
+                          (paymentResponse) => {
+                            Payment.successfulResponse(response, paymentResponse)
+                          },
+                          (paymentResponse) => {
+                            Payment.erroneousResponse(response, paymentResponse)
+                          }
+                        );
+                    }
+                    else {
+                      AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData)
+                    }
+                  },
+                  (orderStatusResponse) => {
+                    Payment.erroneousResponse(response, orderStatusResponse);
+                  }
+                );
+            },
+            () => undefined); // Think nothing could go wrong with the "sleep" promise
+        }
         else {
-          Payment.create(request.body.order)
-            .then(
-              (paymentResponse) => {
-                Payment.successfulResponse(response, paymentResponse)
-              },
-              (paymentResponse) => {
-                Payment.erroneousResponse(response, paymentResponse)
-              }
-            );
+          AntiFraud.orderStatusResponse(response, checkResponseData);
         }
       },
       (checkResponse) => {
         Payment.erroneousResponse(response, checkResponse);
+      }
+    );
+});
+
+app.get("/api/v1/orders/:id/status/", function (request, response) {
+  AntiFraud.getOrderStatus(request.params.id)
+    .then(
+      (orderStatusResponse) => {
+        let checkOrderStatusResponseData = AntiFraud.successfulResponse(orderStatusResponse);
+        AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData);
+      },
+      (orderStatusResponse) => {
+        AntiFraud.erroneousResponse(response, orderStatusResponse);
+      }
+    );
+});
+
+app.post("/api/v1/orders/check/", function (request, response) {
+  AntiFraud.check(request.body)
+    .then(
+      (checkResponse) => {
+        let checkResponseData = AntiFraud.successfulResponse(checkResponse);
+
+        if (parseInt(checkResponseData.StatusCode[0])) {
+          AntiFraud.erroneousResponse(response, checkResponseData);
+        }
+        else if (checkResponseData.Orders[0].Order[0].Status[0] == "NVO") {
+          sleep(8).then( // TODO Use async/await on this promise
+            () => {
+              AntiFraud.getOrderStatus(request.body.order.MerchantOrderId)
+                .then(
+                  (orderStatusResponse) => {
+                    let checkOrderStatusResponseData = AntiFraud.successfulResponse(orderStatusResponse);
+
+                    AntiFraud.orderStatusResponse(response, checkOrderStatusResponseData);
+                  },
+                  (orderStatusResponse) => {
+                    AntiFraud.erroneousResponse(response, orderStatusResponse);
+                  }
+                );
+            },
+            () => undefined); // Think nothing could go wrong with the "sleep" promise
+        }
+        else {
+          AntiFraud.orderStatusResponse(response, checkResponseData);
+        }
+      },
+      (checkResponse) => {
+        AntiFraud.erroneousResponse(response, checkResponse);
       }
     );
 });
