@@ -25,6 +25,7 @@ function check(requestBody) {
   }
 
   csOrder.ID = requestBody.order.MerchantOrderId;
+  csOrder.IP = requestBody.IP;
   csOrder.Date = dateTimeNow;
   csOrder.QtyInstallments = requestBody.order.Payment.Installments;
   csOrder.TotalItems = csOrder.TotalOrder = amount;

@@ -5,6 +5,7 @@ module.exports = {
   sessionId: "123",
   order: {
     MerchantOrderId: "some_id", // Might be changed in every test due to ClearSale check
+    IP: '192.168.0.1',
     reservationDate: nowDateObject.toSimpleDateTimeString(),
     unitValue: 15700,
     unitQuantity: 1,

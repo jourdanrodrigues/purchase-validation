@@ -20,7 +20,7 @@ module.exports = {
         DeliveryTimeCD: null,
         // QtyItems: null,
         // QtyPaymentTypes: null,
-        // IP: null,
+        IP: null,
         // ShippingType: null,
         // Gift: null,
         // GiftMessage: null,
