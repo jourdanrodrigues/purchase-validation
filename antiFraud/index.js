@@ -33,6 +33,11 @@ function check(requestBody) {
   csOrder.FingerPrint.SessionID = requestBody.sessionId;
   csOrder.ReservationDate = requestBody.order.reservationDate;
 
+  csBillingData.Name = requestBody.order.Customer.Name;
+  csBillingData.LegalDocument1 = requestBody.order.Customer.LegalDocument;
+  csBillingData.BirthDate = requestBody.order.Customer.birthDate;
+  csBillingData.Email = requestBody.order.Customer.Email;
+
   csBillingAddress.Street = requestBody.order.Customer.Address.Street;
   csBillingAddress.Number = requestBody.order.Customer.Address.Number;
   csBillingAddress.ZipCode = requestBody.order.Customer.Address.ZipCode;

@@ -38,10 +38,10 @@ module.exports = {
           ID: 1,
           Type: 1,
           LegalDocument1: null,
-          LegalDocument2: null,
+          // LegalDocument2: null,
           Name: null,
-          // BirthDate: null,
-          // Email: null,
+          BirthDate: null,
+          Email: null,
           // Gender: null,
           Address: {
             Street: null,
