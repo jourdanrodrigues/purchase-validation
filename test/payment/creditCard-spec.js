@@ -148,10 +148,11 @@ describe("Credit card sale", () => {
   });
 
   it("should be created in a complete transaction with credit card", (done) => {
-    requestData.order.Customer.Identity = "11225468954";
-    requestData.order.Customer.IdentityType = "CPF";
+    requestData.order.Customer.LegalDocument = "11225468954";
+    requestData.order.Customer.DocumentType = "CPF";
     requestData.order.Customer.Email = "compradorteste@teste.com";
     requestData.order.Customer.Birthdate = "1991-01-02";
+    requestData.order.Customer.gender = "M"; // Or "F"
     requestData.order.Payment.ServiceTaxAmount = 0;
     requestData.order.Payment.Interest = "ByMerchant";
     requestData.order.Payment.Capture = true;

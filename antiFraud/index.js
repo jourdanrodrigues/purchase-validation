@@ -37,6 +37,7 @@ function check(requestBody) {
   csBillingData.LegalDocument1 = requestBody.order.Customer.LegalDocument;
   csBillingData.BirthDate = requestBody.order.Customer.birthDate;
   csBillingData.Email = requestBody.order.Customer.Email;
+  csBillingData.Gender = requestBody.order.Customer.gender;
 
   csBillingAddress.Street = requestBody.order.Customer.Address.Street;
   csBillingAddress.Number = requestBody.order.Customer.Address.Number;
@@ -52,9 +53,9 @@ function check(requestBody) {
   csPayment.Amount = amount;
   csPayment.CardType = cardBrands[requestBody.order.Payment.CreditCard.Brand.toRecognize()] || 4;
   csPayment.Name = requestBody.order.Customer.Name;
-  csPayment.LegalDocument = requestBody.order.Customer.Identity;
+  csPayment.LegalDocument = requestBody.order.Customer.LegalDocument;
   csPayment.CardNumber = requestBody.order.Payment.CreditCard.CardNumber;
-  csPayment.CardBin = csPayment.CardNumber.substr(-6); // First 6 digits of credit card
+  csPayment.CardBin = csPayment.CardNumber.replace(csPayment.CardNumber.substr(6), ''); // First 6 digits of credit card
   csPayment.CardExpirationDate = requestBody.order.Payment.CreditCard.ExpirationDate;
 
   csOrder.Items[0].Item.ItemValue = amount;
