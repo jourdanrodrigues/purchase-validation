@@ -26,7 +26,7 @@ app.post("/api/v1/payments/", function (request, response) {
         if (parseInt(checkResponseData.StatusCode[0])) {
           AntiFraud.erroneousResponse(response, checkResponseData);
         }
-        else if (checkResponseData.Orders[0].Order[0].Status[0] == "NVO") {
+        else if (checkResponseData.Orders[0].Order[0].Status[0] === "NVO") {
           sleep(8).then( // TODO Use async/await on this promise
             () => {
               AntiFraud.getOrderStatus(request.body.order.MerchantOrderId)
